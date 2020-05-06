@@ -1,6 +1,7 @@
 package com.jproject.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,18 @@ public class UserService {
 		repository.deleteById(id);
 	}
 	
+	public User update(User user) {
+		var newObj = repository.findById(user.getId()).get();
+		updateData(newObj, user);
+		return repository.save(newObj);
+		
+	}
+	
+	private void updateData(User newObj, User user) {
+		newObj.setName(user.getName());
+		newObj.setEmail(user.getEmail());
+	}
+
 	public User fromDTO(UserDTO dto) {
 		return new User(dto.getId(), dto.getName(), dto.getEmail());
 	}
